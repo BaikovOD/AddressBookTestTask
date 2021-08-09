@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}New address{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h3 align="center">Import from JSON</h3>
+    <br/>
+    <button type="submit" class="btn btn-primary">Import</button>
+    <br/>
+    <br/>
+    <div class="form-group">
+        <label for="data">JSON data</label>
+        <textarea
+          class="form-control"
+          id="data"
+          name="data"
+          rows="20"></textarea>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Address book{% endblock %}
+
+{% block content %}
+<h1 align="center">Address book</h1>
+</br >
+<!--<div class="d-grid gap-3 d-md-block">-->
+    <div class="form-group">
+        <a class="btn btn-primary" id="address_add" href="/addresses/add" role="button">Add</a>
+        <a class="btn btn-primary" id="addresses_parse" href="/addresses/parse" role="button">Import</a>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="value" id="valueLow" value="low" checked>
+            <label class="form-check-label" for="valueLow">
+                Low
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="value" id="valueMedium" value="medium">
+            <label class="form-check-label" for="valueMedium">
+                Medium
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="value" id="valueHigh" value="high">
+            <label class="form-check-label" for="valueHigh">
+                High
+            </label>
+        </div>
+        <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group" role="group" aria-label="First group">
+            <button type="button" class="btn btn-secondary">1</button>
+            <button type="button" class="btn btn-secondary">2</button>
+            <button type="button" class="btn btn-secondary">3</button>
+            <button type="button" class="btn btn-secondary">4</button>
+          </div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text" id="btnGroupAddon2">@</div>
+            </div>
+            <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon2">
+          </div>
+        </div>
+    </div>
+<!--</div>-->
+
+</br >
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">City</th>
+            <th scope="col">State</th>
+            <th scope="col">Postal code</th>
+            <th scope="col">Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row, addr in addresses %}
+            <tr>
+                <th scope="row">{{ row + 1 }}</th>
+                <td>{{ addr.name }}</td>
+                <td>{{ addr.address }}</td>
+                <td>{{ addr.city }}</td>
+                <td>{{ addr.state }}</td>
+                <td>{{ addr.postal_code }}</td>
+                <td>{{ addr.value.value }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
