@@ -74,15 +74,15 @@ def addresses_parse():
             flash('New addresses successfully parsed and added!', category='success')
 
             return redirect(url_for('views.addresses'))
-
-    return render_template("addresses_parse.html")
+    else:
+        return render_template("addresses_parse.html")
 
 
 @views.route('/addresses/filter/')
 def addresses_filter():
     addr_list = get_addr_list(request.args.get('value'))
-    disabled_dict = {'disabled_' + request.args.get('value'):'disabled'}
-    return render_template("addresses.html", addresses=enumerate(addr_list), **disabled_dict)
+    disabled_btns_dict = {'disabled_' + request.args.get('value'):'disabled'}
+    return render_template("addresses.html", addresses=enumerate(addr_list), **disabled_btns_dict)
 
 
 @views.route('/addresses/add', methods=['GET', 'POST'])
