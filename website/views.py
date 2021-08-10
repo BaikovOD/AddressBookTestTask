@@ -52,7 +52,7 @@ def process_addr_info(source, flashMsg=False):
 @views.route('/addresses/')
 def addresses():
     addr_list = get_addr_list()
-    return render_template("addresses.html", addresses=enumerate(addr_list))
+    return render_template("addresses.html", addresses=enumerate(addr_list), disabled_all='disabled')
 
 
 @views.route('/addresses/parse/', methods=['GET', 'POST'])
@@ -79,9 +79,10 @@ def addresses_parse():
 
 
 @views.route('/addresses/filter/')
-def adresses_filter():
+def addresses_filter():
     addr_list = get_addr_list(request.args.get('value'))
-    return render_template("addresses.html", addresses=enumerate(addr_list))
+    disabled_dict = {'disabled_' + request.args.get('value'):'disabled'}
+    return render_template("addresses.html", addresses=enumerate(addr_list), **disabled_dict)
 
 
 @views.route('/addresses/add', methods=['GET', 'POST'])
