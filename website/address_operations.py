@@ -2,7 +2,6 @@ from website.models import Address, AddressValue
 from . import db
 
 
-
 def get_list(value=None):
     """
     Fetches/filters all the addresses from db
@@ -41,6 +40,7 @@ def process_and_get(source):
             column_errors.append(f"Field '{col}' is empty!")
         else:
             values_dict[col] = col_val
+    values_dict['created'] = None
 
     return (column_errors, values_dict)
 
@@ -63,6 +63,7 @@ def add_many(addr_list):
         errors, addr_info = process_and_get(addr)
         if not errors:
             new_address = Address(**addr_info)
+            addr_info['created'] = new_address.created
             db.session.add(new_address)
             added_list.append(addr_info)
 

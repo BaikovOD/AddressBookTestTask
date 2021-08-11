@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, request, flash, \
-    jsonify, redirect, url_for, get_flashed_messages, abort
+    jsonify, redirect, url_for, abort
 import website.address_operations as addrOper
 import json
+from .settings import API_KEY
+
 
 views = Blueprint('views', __name__)
 
@@ -48,17 +50,15 @@ def addresses_import():
 
 @views.route('/addresses/parse/', methods=['POST'])
 def addresses_parse():
-    """API ENDPOINT: Parses the JSON data and adds all the new addresses
+    """External API ENDPOINT: Parses the JSON data and adds all the new addresses
     params:
         key - secret key
-        data - json data with addresses
+        json_data - json data with addresses
 
     returns json {"success":"true/false"}
     """
 
-    secret_key = 'asd'
-
-    if request.form.get('key') == secret_key:
+    if request.form.get('key') != API_KEY:
         abort(403, description="Incorrect key")
         
     json_data = request.form.get('json_data')
@@ -86,7 +86,6 @@ def addresses_filter():
 @views.route('/addresses/add', methods=['GET', 'POST'])
 def address_add():
     """new address addition"""
-
 
     if request.method == 'POST':
         # add new Address

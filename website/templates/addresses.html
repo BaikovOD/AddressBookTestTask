@@ -28,6 +28,7 @@
             <th scope="col">State</th>
             <th scope="col">Postal code</th>
             <th scope="col">Value</th>
+            <th scope="col">created</th>
         </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
                 <td>{{ addr.state }}</td>
                 <td>{{ addr.postal_code }}</td>
                 <td>{{ addr.value.value }}</td>
+                <td>{{ addr.created }}</td>
             </tr>
         {% endfor %}
     </tbody>

@@ -2,20 +2,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 
+
 db = SQLAlchemy()
-DB_NAME = "database.db"
-DB_TYPE = "SQLite"
 
 
-def create_app():
+def create_app(config_file='settings.py'):
     # init
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'friendly-solutions'
-    if DB_TYPE == "SQLite":
-        app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    else:
-        # TODO: write the other DB provider URI's
-        pass
+    app.config.from_pyfile(config_file)
     db.init_app(app)
 
     # views
@@ -30,7 +24,7 @@ def create_app():
 
 
 def create_db(app):
-    if DB_TYPE == "SQLite":
-        if not path.exists('website/' + DB_NAME):
+    if app.config.get("DB_TYPE") == "SQLite":
+        if not path.exists('website/' + app.config.get("DB_NAME")):
             db.create_all(app=app)
             print('Database created!')
