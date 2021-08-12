@@ -12,8 +12,10 @@ views = Blueprint('views', __name__)
 def home():
     return redirect(url_for("views.addresses"))
 
+
 # ---------------------------------------------
 # Addresses blueprints
+
 
 @views.route('/addresses/')
 def addresses():
@@ -27,6 +29,37 @@ def addresses():
         'disabled_btn_all': 'disabled'
     }
     return render_template("addresses.html", **html_params)
+
+
+@views.route('/addresses/filter/')
+def addresses_filter():
+    """filtered by value list of addresses"""
+
+    error, addr_list = addrOper.get_list(request.args.get('value'))
+    if error:
+        flash(error, category='error')
+    html_params = {
+        "addresses": enumerate(addr_list),
+        'disabled_btn_' + request.args.get('value'):'disabled'
+    }
+    return render_template("addresses.html", **html_params)
+
+
+@views.route('/addresses/add', methods=['GET', 'POST'])
+def address_add():
+    """new address addition"""
+
+    if request.method == 'POST':
+        # add new Address
+        errors, addr_info = addrOper.process_and_get(request.form)
+        if errors:
+            for error in errors:
+                flash(error, category='error')
+        else:
+            addrOper.add_one(addr_info)
+            flash('New address successfully added!', category='success')
+
+    return render_template("address_add.html")
 
 
 @views.route('/addresses/import/', methods=['GET', 'POST'])
@@ -60,41 +93,10 @@ def addresses_parse():
 
     if request.form.get('key') != API_KEY:
         abort(403, description="Incorrect key")
-        
+
     json_data = request.form.get('json_data')
     if json_data is None or json_data == "":
         abort(400, description='data is empty')
 
     addr_list = json.loads(json_data)
     return jsonify(addrOper.add_many(addr_list))
-
-
-@views.route('/addresses/filter/')
-def addresses_filter():
-    """filtered by value list of addresses"""
-
-    error, addr_list = addrOper.get_list(request.args.get('value'))
-    if error:
-        flash(error, category='error')
-    html_params = {
-        "addresses": enumerate(addr_list),
-        'disabled_btn_' + request.args.get('value'):'disabled'
-    }
-    return render_template("addresses.html", **html_params)
-
-
-@views.route('/addresses/add', methods=['GET', 'POST'])
-def address_add():
-    """new address addition"""
-
-    if request.method == 'POST':
-        # add new Address
-        errors, addr_info = addrOper.process_and_get(request.form)
-        if errors:
-            for error in errors:
-                flash(error, category='error')
-        else:
-            addrOper.add_one(addr_info)
-            flash('New address successfully added!', category='success')
-
-    return render_template("address_add.html")
