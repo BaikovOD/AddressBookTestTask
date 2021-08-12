@@ -35,7 +35,7 @@ def process_and_get(source):
     column_errors = []
     for col in columns:
         col_val = source.get(col)
-        if col_val is None:
+        if col_val is None or col_val == "":
             values_dict[col] = ''
             column_errors.append(f"Field '{col}' is empty!")
         else:
