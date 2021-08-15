@@ -1,0 +1,207 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Address storage API",
+    "description": "This API allows you to get or to add a batch of addresses into the address book",
+    "contact": {
+      "email": "alehbaikou@gmail.com"
+    },
+    "license": {
+      "name": "Flask",
+      "url": "http://matrix.umcs.lublin.pl/DOC/python-flask-doc/html/license.html#flask-license"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/BaikovOD/AddressAdd/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "/",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "developers",
+      "description": "Operations available to regular developers"
+    }
+  ],
+  "paths": {
+    "/adresses/get": {
+      "get": {
+        "tags": [
+          "developers"
+        ],
+        "summary": "gets the addressess from addressbook",
+        "description": "Allows you to get all the stored addresses. if 'value' get param sent - filters the addressess\n",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "description": "secret api key",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "description": "filter param (low, medium, high)",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "high"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns the addressess in json format (with filter if value param specified)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Address"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Incorrect key"
+          }
+        }
+      }
+    },
+    "/adresses/parse": {
+      "post": {
+        "tags": [
+          "developers"
+        ],
+        "summary": "adds addresses to the address book",
+        "description": "Allows you to add a pack of addresses \n  via JSON\n",
+        "operationId": "parse",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "description": "secret api key",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "json-data",
+            "in": "query",
+            "description": "the adressess array in JSON-format",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Address"
+              }
+            },
+            "example": "[ { \"name\":\"United Center\", \"address\": \"1901 W Madison St\", \"city\": \"Chicago\", \"state\": \"IL\", \"postal_code\": \"60612\", \"value\": \"medium\" }, { \"name\":\"Madison Square Garden\", \"address\": \"4 Pennsylvania Plaza\", \"city\": \"New York\", \"state\": \"NY\", \"postal_code\": \"10001\", \"value\": \"low\" } ]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "addition of the data result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdditionResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "data is empty"
+          },
+          "403": {
+            "description": "Incorrect key"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "format": "string",
+            "example": "Fiserv Forum"
+          },
+          "address": {
+            "type": "string",
+            "format": "string",
+            "example": "1111 Vel R. Phillips Ave"
+          },
+          "city": {
+            "type": "string",
+            "format": "string",
+            "example": "Milwaukee"
+          },
+          "state": {
+            "type": "string",
+            "format": "string",
+            "example": "WI"
+          },
+          "postal_code": {
+            "type": "string",
+            "format": "string",
+            "example": "53203"
+          },
+          "value": {
+            "type": "string",
+            "description": "(low, medium, high)",
+            "format": "string",
+            "example": "high"
+          }
+        },
+        "description": "Address info"
+      },
+      "AdditionResult": {
+        "required": [
+          "added",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "added": {
+            "type": "array",
+            "format": "string",
+            "example": "[ { \"name\":\"United Center\", \"address\": \"1901 W Madison St\", \"city\": \"Chicago\", \"state\": \"IL\", \"postal_code\": \"60612\", \"value\": \"medium\" }, { \"name\":\"Madison Square Garden\", \"address\": \"4 Pennsylvania Plaza\", \"city\": \"New York\", \"state\": \"NY\", \"postal_code\": \"10001\", \"value\": \"low\" } ]",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            }
+          }
+        }
+      }
+    }
+  }
+}

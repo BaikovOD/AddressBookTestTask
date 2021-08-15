@@ -1,11 +1,24 @@
 from flask import Blueprint, render_template, request, flash, \
-    jsonify, redirect, url_for, abort
+    jsonify, redirect, url_for, abort, json, make_response
 import website.address_operations as addrOper
-import json
-from .settings import API_KEY
+from .settings import API_KEY, SWAGGER_URL
 
 
 views = Blueprint('views', __name__)
+
+
+# ---------------------------------------------
+# help functions
+def base_html_params():
+    html_params = {
+        "SWAGGER_URL": SWAGGER_URL
+    }
+
+    return html_params
+
+
+# ---------------------------------------------
+# Blueprints
 
 
 @views.route('/')
@@ -14,7 +27,7 @@ def home():
 
 
 # ---------------------------------------------
-# Addresses blueprints
+# Addresses HTML blueprints
 
 
 @views.route('/addresses/')
@@ -24,10 +37,11 @@ def addresses():
     error, addr_list = addrOper.get_list()
     if error:
         flash(error, category='error')
-    html_params = {
+    html_params = base_html_params()
+    html_params.update({
         "addresses": enumerate(addr_list),
         'disabled_btn_all': 'disabled'
-    }
+    })
     return render_template("addresses.html", **html_params)
 
 
@@ -38,10 +52,11 @@ def addresses_filter():
     error, addr_list = addrOper.get_list(request.args.get('value'))
     if error:
         flash(error, category='error')
-    html_params = {
+    html_params = base_html_params()
+    html_params.update({
         "addresses": enumerate(addr_list),
         'disabled_btn_' + request.args.get('value'):'disabled'
-    }
+    })
     return render_template("addresses.html", **html_params)
 
 
@@ -59,7 +74,8 @@ def address_add():
             addrOper.add_one(addr_info)
             flash('New address successfully added!', category='success')
 
-    return render_template("address_add.html")
+    html_params = base_html_params()
+    return render_template("address_add.html", **html_params)
 
 
 @views.route('/addresses/import/', methods=['GET', 'POST'])
@@ -78,7 +94,29 @@ def addresses_import():
 
             return redirect(url_for('views.addresses'))
     else:
-        return render_template("addresses_import.html")
+        html_params = base_html_params()
+        return render_template("addresses_import.html", **html_params)
+
+
+# ---------------------------------------------
+# Addresses API JSON blueprints
+
+
+@views.route('/addresses/get/')
+def addresses_get():
+    """External API ENDPOINT: returns json with addressess (filters if there is a 'value' get param)
+    params:
+        key - secret key
+        value - (filter param)
+
+    returns json [addresses]
+    """
+
+    if request.args.get('key') != API_KEY:
+        abort(403, description="Incorrect key")
+
+    error, addr_list = addrOper.get_list((request.args.get('value')))
+    return make_response(jsonify([addr.to_dict() for addr in addr_list]), 200)
 
 
 @views.route('/addresses/parse/', methods=['POST'])
@@ -88,7 +126,7 @@ def addresses_parse():
         key - secret key
         json_data - json data with addresses
 
-    returns json {"success":"true/false"}
+    returns json {"success":"true/false", "added": "all the successfully added addresses"}
     """
 
     if request.form.get('key') != API_KEY:
@@ -99,4 +137,5 @@ def addresses_parse():
         abort(400, description='data is empty')
 
     addr_list = json.loads(json_data)
-    return jsonify(addrOper.add_many(addr_list))
+    return make_response(addrOper.add_many(addr_list), 200)
+

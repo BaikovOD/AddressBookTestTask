@@ -28,7 +28,6 @@ def process_and_get(source):
     :param source: filter by value (low, medium, high)
     :returns tuple(column_errors_list, values_dict)
     """
-    # TODO:EMPTY COLUMNS GO LIKE NOT ASSIGNED
 
     columns = ['name', 'address', 'city', 'state', 'postal_code', 'value']
     values_dict = {}
@@ -40,6 +39,8 @@ def process_and_get(source):
             column_errors.append(f"Field '{col}' is empty!")
         else:
             values_dict[col] = col_val
+    if values_dict['value'] == '':
+        values_dict['value'] = 'low'
     values_dict['created'] = None
 
     return (column_errors, values_dict)

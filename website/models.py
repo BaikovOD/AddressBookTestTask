@@ -2,6 +2,8 @@ import enum
 from . import db
 import sqlalchemy as sa
 from datetime import datetime, timezone
+import json
+from dataclasses import dataclass
 
 
 # for the datatime field with timezones UTC format
@@ -37,3 +39,15 @@ class Address(db.Model):
     postal_code = db.Column(db.String(20))
     value = db.Column(db.Enum(AddressValue))
     created = db.Column(TimeStamp(), default=datetime.now(timezone.utc))
+
+    # for serialization
+    def to_dict(self):
+        col_dict = {}
+        for column in self.__table__.columns:
+            col_dict[column.name] = str(getattr(self, column.name))
+
+        # enum values
+        col_dict['value'] = self.value.value
+
+        return col_dict
+
