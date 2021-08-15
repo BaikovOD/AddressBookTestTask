@@ -5,8 +5,6 @@ Address storage with GET and ADD API endpoints. Task link: https://gist.github.c
 Integration with Flask-restplus, Flask-SQLalchemy extensions.
 
 ### Extension:
-- Restful: [Flask-restplus](http://flask-restplus.readthedocs.io/en/stable/)
-
 - SQL ORM: [Flask-SQLalchemy](http://flask-sqlalchemy.pocoo.org/2.1/)
 
 - Testing: [pytest](https://docs.pytest.org/)
