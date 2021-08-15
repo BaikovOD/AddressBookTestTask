@@ -29,7 +29,7 @@
     }
   ],
   "paths": {
-    "/adresses/get": {
+    "/addresses/get": {
       "get": {
         "tags": [
           "developers"
@@ -82,7 +82,7 @@
         }
       }
     },
-    "/adresses/parse": {
+    "/addresses/parse": {
       "post": {
         "tags": [
           "developers"
@@ -103,7 +103,7 @@
             }
           },
           {
-            "name": "json-data",
+            "name": "json_data",
             "in": "query",
             "description": "the adressess array in JSON-format",
             "required": true,
