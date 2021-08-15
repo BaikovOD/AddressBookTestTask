@@ -17,6 +17,11 @@ def create_app(config_file='settings.py'):
         app.debug = True
     else:
         app.debug = False
+    port_param = app.config.get('PORT')
+    if port_param is None:
+        app.port = 5000
+    else:
+        app.debug = port_param
     db.init_app(app)
 
     # views
