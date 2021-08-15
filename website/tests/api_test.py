@@ -76,4 +76,4 @@ def test_get_filter():
     response = requests.get(url, params=mock_request_params)
     assert response.status_code == 200
     assert len(response.json()) > 0
-    assert response.json()[0].get('address') != ''
+    assert response.json()[0].get('address')
