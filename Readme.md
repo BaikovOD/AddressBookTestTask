@@ -2,7 +2,7 @@
 
 Address storage with GET and ADD API endpoints. Task link: https://gist.github.com/aryou/1f0861ac855085c5887ce441d7416270
 
-Integration with Flask-restplus, Flask-SQLalchemy extensions.
+Integration with Flask-SQLalchemy.
 
 ### Extension:
 - SQL ORM: [Flask-SQLalchemy](http://flask-sqlalchemy.pocoo.org/2.1/)
