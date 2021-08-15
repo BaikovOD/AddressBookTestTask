@@ -1,6 +1,6 @@
 # Addressbook API
 
-Address storage with GET and ADD API endpoints
+Address storage with GET and ADD API endpoints. Task link: https://gist.github.com/aryou/1f0861ac855085c5887ce441d7416270
 
 Integration with Flask-restplus, Flask-SQLalchemy extensions.
 
