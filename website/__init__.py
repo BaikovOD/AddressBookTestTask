@@ -2,8 +2,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_swagger_ui import get_swaggerui_blueprint
-
-
 from os import path
 
 
@@ -14,6 +12,11 @@ def create_app(config_file='settings.py'):
     # init
     app = Flask(__name__)
     app.config.from_pyfile(config_file)
+    debug_param = app.config.get('DEBUG')
+    if debug_param == 'True':
+        app.debug = True
+    else:
+        app.debug = False
     db.init_app(app)
 
     # views

@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+DEBUG = os.getenv('DEBUG')
+
 # DB Settings
 DB_NAME = os.getenv('DB_NAME')
 DB_TYPE = os.getenv('DB_TYPE')

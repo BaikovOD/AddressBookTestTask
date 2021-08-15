@@ -1,8 +1,8 @@
 # Addressbook API
 
-Address storage with get and add API endpoints
+Address storage with GET and ADD API endpoints
 
-Integration with Flask-restplus, Flask-Cors, Flask-SQLalchemy extensions.
+Integration with Flask-restplus, Flask-SQLalchemy extensions.
 
 ### Extension:
 - Restful: [Flask-restplus](http://flask-restplus.readthedocs.io/en/stable/)
@@ -49,10 +49,12 @@ $ pip install -r requirements.txt
 ```
 ## Flask Configuration
 
-to configure the Flask go to .env file
-#### cfg example (.env)
+to configure the Flask go to /website/.env file
+#### .env file
 
 ```
+DEBUG = False
+
 DB_TYPE = "SQLite"
 DB_NAME = "address_book.db"
 SQLALCHEMY_DATABASE_URI = "sqlite:///address_book.db"
@@ -72,7 +74,7 @@ $ python main.py
 ```
 In flask, Default port is `5000`
 
-Swagger document page:  `http://127.0.0.1:5000/api-doc`
+Swagger document page:  `http://127.0.0.1:5000/api-doc/`
 
 
 ## Unittest
