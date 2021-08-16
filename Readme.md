@@ -78,3 +78,15 @@ Swagger document page:  `http://127.0.0.1:port/api-doc/`
 ```
 $ pytest
 ```
+
+
+### Run with Docker
+
+```
+$ docker build -t address-book:flask
+
+$ docker run -p 5000:5000 -it --rm --name address-book address-book:flask
+ 
+```
+
+In image building, the webapp folder will also add into the image
